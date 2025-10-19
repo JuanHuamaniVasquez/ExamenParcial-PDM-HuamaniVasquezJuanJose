@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Examen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="WelcomeMessagge">Juego de Colores</string>
+    <string name="welcomeButton">Iniciar Juego</string>
+    <string name="welcomeMessagge">Juego de Colores</string>
+    <string name="btnRed">Rojo</string>
+    <string name="btnGreen">Verde</string>
+    <string name="btnBlue">Azul</string>
+    <string name="btnYellow">Amarillo</string>
+    <string name="tvScore">0</string>
+    <string name="tvTimer">30s</string>
+    <string name="btnWhite">Blanco</string>
+    <string name="btnBlack">Negro</string>
+</resources>
