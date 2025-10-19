@@ -2,6 +2,7 @@ package com.example.examen
 
 import android.app.AlertDialog
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
@@ -21,6 +22,11 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     private var score = 0
     private var currentColorName = ""
     private var timer: CountDownTimer? = null
+
+    // MediaPlayers
+    private var correctSound: MediaPlayer? = null
+    private var wrongSound: MediaPlayer? = null
+    private var timeOverSound: MediaPlayer? = null
 
     private val colors = listOf(
         Pair("Rojo", Color.RED),
@@ -48,9 +54,6 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         val btnBlack = view.findViewById<Button>(R.id.btnBlack)
         val btnWhite = view.findViewById<Button>(R.id.btnWhite)
 
-        // Iniciar juego
-        showStartDialog()
-
         // Listeners de botones
         btnRed.setOnClickListener { checkAnswer("Rojo") }
         btnGreen.setOnClickListener { checkAnswer("Verde") }
@@ -58,6 +61,14 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         btnYellow.setOnClickListener { checkAnswer("Amarillo") }
         btnBlack.setOnClickListener { checkAnswer("Negro") }
         btnWhite.setOnClickListener { checkAnswer("Blanco") }
+
+        // Inicializar sonidos
+        correctSound = MediaPlayer.create(requireContext(), R.raw.correct)
+        wrongSound = MediaPlayer.create(requireContext(), R.raw.wrong)
+        timeOverSound = MediaPlayer.create(requireContext(), R.raw.time_over)
+
+        // Iniciar juego
+        showStartDialog()
     }
 
     private fun showStartDialog() {
@@ -80,10 +91,13 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     private fun checkAnswer(selectedColor: String) {
         if (selectedColor == currentColorName) {
             score++
+            correctSound?.start()
             tvScore.text = "$score"
+
         }
         else {
             score--
+            wrongSound?.start()
             tvScore.text = "$score"
         }
         shuffleButtons() // cambiar el orden de botones después de responder
@@ -98,6 +112,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
             }
 
             override fun onFinish() {
+                timeOverSound?.start()
                 AlertDialog.Builder(requireContext())
                     .setTitle("Se acabo el Tiempo :(")
                     .setPositiveButton("Continuar") { dialog, _ ->
@@ -136,6 +151,9 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     override fun onDestroyView() {
         super.onDestroyView()
         timer?.cancel()
+        correctSound?.release()
+        wrongSound?.release()
+        timeOverSound?.release()
     }
 
 }
