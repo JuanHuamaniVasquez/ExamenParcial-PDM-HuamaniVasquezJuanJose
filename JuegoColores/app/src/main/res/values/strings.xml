@@ -13,4 +13,9 @@
     <string name="tvTimer">30s</string>
     <string name="btnWhite">Blanco</string>
     <string name="btnBlack">Negro</string>
+    <string name="tvTitle">Resultados</string>
+    <string name="tvCurrent">Puntaje actual: 0</string>
+    <string name="tvHigh">Máximo histórico: 0</string>
+    <string name="btnReplay">Volver a jugar</string>
+    <string name="btnExit">Salir</string>
 </resources>

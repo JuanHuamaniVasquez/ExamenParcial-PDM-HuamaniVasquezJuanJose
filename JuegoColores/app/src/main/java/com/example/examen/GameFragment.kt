@@ -62,7 +62,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
     private fun showStartDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("¿Listo?")
+            .setTitle("¿Estas Listo?")
             .setPositiveButton("Comenzar") { dialog, _ ->
                 dialog.dismiss()
                 startTimer()
@@ -99,7 +99,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
             override fun onFinish() {
                 AlertDialog.Builder(requireContext())
-                    .setTitle("Termino el Juego :(")
+                    .setTitle("Se acabo el Tiempo :(")
                     .setPositiveButton("Continuar") { dialog, _ ->
                         dialog.dismiss()
                         goToResult()
