@@ -10,5 +10,4 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)  // Llama al metodo del ciclo de vida de la actividad
         setContentView(R.layout.activity_main) // Asigna el diseño (layout) que se mostrará en pantalla
     }
-    }
 }
