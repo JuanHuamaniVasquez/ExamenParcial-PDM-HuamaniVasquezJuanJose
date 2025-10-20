@@ -14,11 +14,12 @@ import androidx.core.view.children
 import androidx.navigation.fragment.findNavController
 
 class GameFragment : Fragment(R.layout.fragment_game) {
+    // Referencias a los elementos visuales
     private lateinit var colorView: View
     private lateinit var tvScore: TextView
     private lateinit var tvTimer: TextView
     private lateinit var gridLayout: GridLayout
-
+    // Variables del juego
     private var score = 0
     private var currentColorName = ""
     private var timer: CountDownTimer? = null
@@ -28,6 +29,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     private var wrongSound: MediaPlayer? = null
     private var timeOverSound: MediaPlayer? = null
 
+    // Lista de colores con su nombre y valor
     private val colors = listOf(
         Pair("Rojo", Color.RED),
         Pair("Verde", Color.GREEN),
@@ -47,6 +49,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         tvTimer = view.findViewById(R.id.tvTimer)
         gridLayout = view.findViewById(R.id.layoutButtons)
 
+        // Referencias a los botones de colores
         val btnRed = view.findViewById<Button>(R.id.btnRed)
         val btnGreen = view.findViewById<Button>(R.id.btnGreen)
         val btnBlue = view.findViewById<Button>(R.id.btnBlue)
@@ -71,31 +74,36 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         showStartDialog()
     }
 
+    // Muestra un cuadro de diálogo para comenzar
     private fun showStartDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle("¿Estas Listo?")
             .setPositiveButton("Comenzar") { dialog, _ ->
                 dialog.dismiss()
-                startTimer()
-                showRandomColor()
+                startTimer()        // inicia el cronómetro
+                showRandomColor()   // muestra un color al azar
             }
             .setCancelable(false)
             .show()
     }
+    // Muestra un color aleatorio en el recuadro
     private fun showRandomColor() {
         val randomColor = colors.random()
         currentColorName = randomColor.first
         colorView.setBackgroundColor(randomColor.second)
     }
 
+    // Verifica si la respuesta del jugador es correcta
     private fun checkAnswer(selectedColor: String) {
         if (selectedColor == currentColorName) {
+            // Si acierta se suma un punto y reproduce sonido correcto
             score++
             correctSound?.start()
             tvScore.text = "$score"
 
         }
         else {
+            // Si falla se resta un punto y reproduce sonido de error
             score--
             wrongSound?.start()
             tvScore.text = "$score"
@@ -104,20 +112,22 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         showRandomColor() // cambiar color después de responder
     }
 
+    // Inicia el temporizador de 30 segundos
     private fun startTimer() {
         timer = object : CountDownTimer(30_000, 1_000) {
             override fun onTick(millisUntilFinished: Long) {
                 val seconds = millisUntilFinished / 1000
-                tvTimer.text = "${seconds}s"
+                tvTimer.text = "${seconds}s" // muestra segundos restantes
             }
 
+            // Cuando el tiempo se acaba:
             override fun onFinish() {
                 timeOverSound?.start()
                 AlertDialog.Builder(requireContext())
                     .setTitle("Se acabo el Tiempo :(")
                     .setPositiveButton("Continuar") { dialog, _ ->
                         dialog.dismiss()
-                        goToResult()
+                        goToResult() // va a la pantalla de resultados
                     }
                     .setCancelable(false)
                     .show()
@@ -133,6 +143,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         }
         findNavController().navigate(R.id.action_game_to_result, bundle)
     }
+    // Mezcla el orden de los botones del grid
     private fun shuffleButtons() {
         val buttons = gridLayout.children.filterIsInstance<Button>().toList()
         // Mezclar el orden de los botones
@@ -141,13 +152,12 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         // Remover todos los botones
         gridLayout.removeAllViews()
 
-
         // Agregar los botones en orden mezclado
         shuffledButtons.forEach { button ->
             gridLayout.addView(button)
         }
     }
-
+    // Libera los recursos y detiene sonidos/timer al salir del fragmento
     override fun onDestroyView() {
         super.onDestroyView()
         timer?.cancel()

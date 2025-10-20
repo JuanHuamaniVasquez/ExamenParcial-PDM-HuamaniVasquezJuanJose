@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class ResultFragment : Fragment(R.layout.fragment_result) {
+    // Referencias a los elementos del layout
     private lateinit var tvCurrentScore: TextView
     private lateinit var tvHighScore: TextView
     private lateinit var rvHistory: RecyclerView
@@ -31,6 +32,8 @@ class ResultFragment : Fragment(R.layout.fragment_result) {
         rvHistory = view.findViewById(R.id.rvHistory)
         btnReplay = view.findViewById(R.id.btnReplay)
         btnExit = view.findViewById(R.id.btnExit)
+
+        // Obtener el puntaje pasado desde el fragmento anterior (GameFragment)
         val score = arguments?.getInt("score", 0) ?: 0
         val currentScore = score
         tvCurrentScore.text = "Puntaje actual: $currentScore"
@@ -40,8 +43,9 @@ class ResultFragment : Fragment(R.layout.fragment_result) {
 
         // Mostrar mejor puntaje (SharedPreferences)
         val prefs = requireContext().getSharedPreferences("color_game", Context.MODE_PRIVATE)
-        val highScore = prefs.getInt("high_score", 0)
+        val highScore = prefs.getInt("high_score", 0) // Obtener el mejor puntaje guardado
 
+        // Si el puntaje actual es mayor, actualizar el máximo histórico
         if (currentScore > highScore) {
             prefs.edit().putInt("high_score", currentScore).apply()
             tvHighScore.text = "Máximo histórico: $currentScore"
